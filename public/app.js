@@ -221,7 +221,9 @@ function render() {
         [n.x, cy],
       ];
       for (const [dx, dy] of dots) {
-        parts.push(`<circle class="connect-dot" data-connect-dot="${n.id}" cx="${dx}" cy="${dy}" r="5"/>`);
+        // Large transparent hit area for easy grabbing + a small visible dot.
+        parts.push(`<circle data-connect-dot="${n.id}" cx="${dx}" cy="${dy}" r="11" fill="transparent" style="cursor:crosshair"/>`);
+        parts.push(`<circle class="connect-dot" data-connect-dot="${n.id}" cx="${dx}" cy="${dy}" r="5.5"/>`);
       }
     }
   }
