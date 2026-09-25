@@ -4,83 +4,172 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Architecture Diagram Builder — April2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <header class="topbar">
       <div class="brand">
-        <span class="logo">◧</span>
-        <div>
-          <h1>Architecture Diagram Builder</h1>
+        <span class="logo">
+          <img src="/assets/thinkinfosec-logo.png" alt="ThinkInfoSec logo" />
+        </span>
+        <div class="brand-text">
+          <div class="brand-kicker">ThinkInfoSec · Architecture Diagram Builder</div>
           <input id="title" class="title-input" value="Falcon Reference Architecture" aria-label="Diagram title" />
         </div>
       </div>
+
       <div class="toolbar">
-        <button id="btn-new" class="btn">New</button>
-        <button id="btn-add-zone" class="btn">Add zone</button>
-        <button id="btn-connect" class="btn" aria-pressed="false">Connect</button>
-        <button id="btn-delete" class="btn btn-danger">Delete</button>
+        <div class="tgroup" role="group" aria-label="File">
+          <button id="btn-new" class="btn" title="New diagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>New
+          </button>
+          <select id="load-select" class="select" aria-label="Load saved diagram">
+            <option value="">Load saved…</option>
+          </select>
+          <button id="btn-save" class="btn" title="Save diagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Save
+          </button>
+        </div>
+
         <span class="divider"></span>
-        <select id="load-select" class="select" aria-label="Load saved diagram">
-          <option value="">Load saved…</option>
-        </select>
-        <button id="btn-save" class="btn btn-primary">Save</button>
+
+        <div class="tgroup" role="group" aria-label="Edit">
+          <button id="btn-undo" class="btn" title="Undo (Ctrl+Z)" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M3 13a9 9 0 1 0 3-7L3 9"/></svg>
+          </button>
+          <button id="btn-redo" class="btn" title="Redo (Ctrl+Y)" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M21 13a9 9 0 1 1-3-7l3 3"/></svg>
+          </button>
+          <button id="btn-delete" class="btn btn-danger" title="Delete selection (Del)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          </button>
+        </div>
+
         <span class="divider"></span>
-        <button id="btn-export-mermaid" class="btn">Mermaid</button>
-        <button id="btn-export-d2" class="btn">D2</button>
-        <button id="btn-export-svg" class="btn">SVG</button>
-        <button id="btn-export-png" class="btn">PNG</button>
+
+        <div class="tgroup" role="group" aria-label="Insert">
+          <button id="btn-add-zone" class="btn" title="Add a zone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" stroke-dasharray="4 3"/><path d="M12 8v8M8 12h8"/></svg>Zone
+          </button>
+          <button id="btn-connect" class="btn" aria-pressed="false" title="Connect blocks (C)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.5 8.5l7 7"/></svg>Connect
+          </button>
+        </div>
+
+        <span class="divider"></span>
+
+        <button id="btn-export" class="btn-primary" title="Export diagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Export
+        </button>
       </div>
     </header>
 
     <main class="layout">
-      <aside class="palette" id="palette" aria-label="Block palette">
-        <div class="palette-hint">Click a block to add it</div>
+      <aside class="palette" aria-label="Block palette">
+        <div class="palette-search">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="palette-search" type="search" placeholder="Search blocks…" aria-label="Search blocks" />
+          </div>
+        </div>
+        <div class="palette-list" id="palette-list"></div>
       </aside>
 
       <section class="canvas-wrap">
         <div id="status" class="status" role="status"></div>
         <svg id="canvas" class="canvas" xmlns="http://www.w3.org/2000/svg"></svg>
+
+        <div id="empty-state" class="empty-state hidden">
+          <div class="es-card">
+            <h2>Start your architecture diagram</h2>
+            <p>Drag a block from the left palette onto the canvas, or load the sample reference architecture to explore.</p>
+            <button id="btn-load-sample" class="btn-primary">Load sample diagram</button>
+          </div>
+        </div>
+
+        <div class="hint-bar">
+          <span><kbd>Drag</kbd> block to add</span>
+          <span><kbd>C</kbd> connect</span>
+          <span><kbd>Del</kbd> remove</span>
+          <span><kbd>Ctrl</kbd>+<kbd>Z</kbd> undo</span>
+          <span><kbd>Scroll</kbd> zoom</span>
+        </div>
+
+        <div class="zoombar" role="group" aria-label="Zoom controls">
+          <button id="zoom-out" title="Zoom out" aria-label="Zoom out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+          <span class="zoom-value" id="zoom-value">100%</span>
+          <button id="zoom-in" title="Zoom in" aria-label="Zoom in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button id="zoom-fit" title="Fit to content" aria-label="Fit to content"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+        </div>
       </section>
 
       <aside class="inspector" aria-label="Inspector">
-        <div id="inspector-empty" class="inspector-empty">Select a block or edge to edit its properties.</div>
+        <div id="inspector-empty" class="inspector-empty">Select a block or connection to edit its properties, or drop a new block onto the canvas.</div>
 
-        <div id="inspector-node" class="inspector-panel" hidden>
-          <h2>Block</h2>
-          <label>Label<input id="node-label" type="text" /></label>
-          <label>Zone
-            <select id="node-zone"></select>
-          </label>
-          <p id="node-type" class="muted"></p>
+        <div id="inspector-node" class="inspector-section" hidden>
+          <div class="inspector-title">Block</div>
+          <div class="field"><div id="node-type-badge" class="type-badge"></div></div>
+          <div class="field"><label for="node-label">Label</label><input id="node-label" type="text" /></div>
+          <div class="field"><label for="node-zone">Zone</label><select id="node-zone"></select></div>
         </div>
 
-        <div id="inspector-edge" class="inspector-panel" hidden>
-          <h2>Connection</h2>
-          <label>Label<input id="edge-label" type="text" /></label>
-          <label>Style
-            <select id="edge-style">
-              <option value="solid">Solid</option>
-              <option value="dashed">Dashed</option>
-            </select>
-          </label>
-        </div>
-
-        <div id="inspector-zone" class="inspector-panel" hidden>
-          <h2>Zone</h2>
-          <label>Label<input id="zone-label" type="text" /></label>
-        </div>
-
-        <div class="export-panel">
-          <div class="export-head">
-            <h2 id="export-title">Export</h2>
-            <button id="btn-copy" class="btn btn-small" hidden>Copy</button>
+        <div id="inspector-edge" class="inspector-section" hidden>
+          <div class="inspector-title">Connection</div>
+          <div class="field"><label for="edge-label">Label</label><input id="edge-label" type="text" placeholder="e.g. telemetry" /></div>
+          <div class="field">
+            <label>Style</label>
+            <div class="segmented" id="edge-style">
+              <button data-style="solid" class="active">Solid</button>
+              <button data-style="dashed">Dashed</button>
+            </div>
           </div>
-          <pre id="export-text" class="export-text" hidden></pre>
-          <div id="export-preview" class="export-preview" hidden></div>
+        </div>
+
+        <div id="inspector-zone" class="inspector-section" hidden>
+          <div class="inspector-title">Zone</div>
+          <div class="field"><label for="zone-label">Label</label><input id="zone-label" type="text" /></div>
+        </div>
+
+        <div class="inspector-actions" id="inspector-actions" hidden>
+          <button id="btn-delete-2" class="btn btn-ghost-danger" style="width:100%;justify-content:center;border:1px solid var(--border);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Delete selection
+          </button>
         </div>
       </aside>
     </main>
+
+    <div id="export-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="export-modal-title">
+      <div class="modal">
+        <div class="modal-head">
+          <h2 id="export-modal-title">Export diagram</h2>
+          <button class="modal-close" id="modal-close" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="modal-tabs" role="tablist">
+          <button class="modal-tab active" data-format="mermaid" role="tab">Mermaid</button>
+          <button class="modal-tab" data-format="d2" role="tab">D2</button>
+          <button class="modal-tab" data-format="svg" role="tab">SVG</button>
+          <button class="modal-tab" data-format="png" role="tab">PNG</button>
+        </div>
+        <div class="modal-body">
+          <pre id="modal-code" hidden></pre>
+          <div id="modal-preview" class="modal-preview" hidden></div>
+        </div>
+        <div class="modal-foot">
+          <span class="hint" id="modal-hint"></span>
+          <div class="actions">
+            <button id="btn-copy" class="btn" style="border:1px solid var(--border);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy
+            </button>
+            <button id="btn-download" class="btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="/app.js"></script>
   </body>

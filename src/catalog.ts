@@ -63,3 +63,7 @@ const CATEGORY_INDEX = new Map<string, Category>(CATEGORIES.map((c) => [c.id, c]
 export function getCategoryColor(categoryId: string): string {
   return CATEGORY_INDEX.get(categoryId)?.color ?? "#64748b";
 }
+
+export function getCategoryLabel(categoryId: string): string {
+  return CATEGORY_INDEX.get(categoryId)?.label ?? categoryId;
+}
