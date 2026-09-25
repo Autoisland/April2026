@@ -18,6 +18,13 @@ data, and alliance partners), organize them into zones, connect them, and export
 - **A clean, modern drag-and-drop canvas UI** with zones, labeled/dashed connections,
   live inspector editing, and in-panel export previews.
 
+## Design & replication guide
+
+Want to reuse the look and feel (theme tokens, palette chips, the SVG canvas engine,
+drag‑to‑connect, export modal, PNG export, undo/redo) in another tool? See
+[`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) — a copy‑paste‑friendly, framework‑free
+walkthrough with a porting checklist for single‑file HTML tools.
+
 ## Requirements
 
 - Node.js >= 22 (the Cloud Agent default image already provides Node 22)
