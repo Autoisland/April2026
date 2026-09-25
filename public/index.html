@@ -3,127 +3,85 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>April2026</title>
-    <style>
-      :root {
-        color-scheme: light dark;
-        --bg: #0f172a;
-        --card: #1e293b;
-        --accent: #38bdf8;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-      }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        background: radial-gradient(1200px 600px at 50% -10%, #1e293b, var(--bg));
-        color: var(--text);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-      }
-      .card {
-        background: var(--card);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 16px;
-        padding: 32px;
-        width: 100%;
-        max-width: 520px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-      }
-      h1 { margin: 0 0 4px; font-size: 1.6rem; }
-      p.sub { margin: 0 0 24px; color: var(--muted); }
-      .row { display: flex; gap: 8px; margin-bottom: 20px; }
-      input {
-        flex: 1;
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(148, 163, 184, 0.3);
-        background: #0f172a;
-        color: var(--text);
-        font-size: 0.95rem;
-      }
-      button {
-        padding: 10px 16px;
-        border-radius: 10px;
-        border: none;
-        background: var(--accent);
-        color: #04283a;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      button:hover { filter: brightness(1.08); }
-      ul { list-style: none; padding: 0; margin: 0; }
-      li {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 10px;
-        background: rgba(15, 23, 42, 0.6);
-        margin-bottom: 8px;
-      }
-      li .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
-      li.done .dot { background: #34d399; }
-      li.done span.title { color: var(--muted); text-decoration: line-through; }
-      .health { margin-top: 20px; font-size: 0.85rem; color: var(--muted); }
-    </style>
+    <title>Architecture Diagram Builder — April2026</title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <main class="card">
-      <h1>April2026</h1>
-      <p class="sub">Cloud Agent environment starter &mdash; tasks demo</p>
-      <div class="row">
-        <input id="title" type="text" placeholder="Add a task&hellip;" />
-        <button id="add">Add</button>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">◧</span>
+        <div>
+          <h1>Architecture Diagram Builder</h1>
+          <input id="title" class="title-input" value="Falcon Reference Architecture" aria-label="Diagram title" />
+        </div>
       </div>
-      <ul id="tasks"></ul>
-      <div class="health" id="health">Checking API health&hellip;</div>
+      <div class="toolbar">
+        <button id="btn-new" class="btn">New</button>
+        <button id="btn-add-zone" class="btn">Add zone</button>
+        <button id="btn-connect" class="btn" aria-pressed="false">Connect</button>
+        <button id="btn-delete" class="btn btn-danger">Delete</button>
+        <span class="divider"></span>
+        <select id="load-select" class="select" aria-label="Load saved diagram">
+          <option value="">Load saved…</option>
+        </select>
+        <button id="btn-save" class="btn btn-primary">Save</button>
+        <span class="divider"></span>
+        <button id="btn-export-mermaid" class="btn">Mermaid</button>
+        <button id="btn-export-d2" class="btn">D2</button>
+        <button id="btn-export-svg" class="btn">SVG</button>
+        <button id="btn-export-png" class="btn">PNG</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="palette" id="palette" aria-label="Block palette">
+        <div class="palette-hint">Click a block to add it</div>
+      </aside>
+
+      <section class="canvas-wrap">
+        <div id="status" class="status" role="status"></div>
+        <svg id="canvas" class="canvas" xmlns="http://www.w3.org/2000/svg"></svg>
+      </section>
+
+      <aside class="inspector" aria-label="Inspector">
+        <div id="inspector-empty" class="inspector-empty">Select a block or edge to edit its properties.</div>
+
+        <div id="inspector-node" class="inspector-panel" hidden>
+          <h2>Block</h2>
+          <label>Label<input id="node-label" type="text" /></label>
+          <label>Zone
+            <select id="node-zone"></select>
+          </label>
+          <p id="node-type" class="muted"></p>
+        </div>
+
+        <div id="inspector-edge" class="inspector-panel" hidden>
+          <h2>Connection</h2>
+          <label>Label<input id="edge-label" type="text" /></label>
+          <label>Style
+            <select id="edge-style">
+              <option value="solid">Solid</option>
+              <option value="dashed">Dashed</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="inspector-zone" class="inspector-panel" hidden>
+          <h2>Zone</h2>
+          <label>Label<input id="zone-label" type="text" /></label>
+        </div>
+
+        <div class="export-panel">
+          <div class="export-head">
+            <h2 id="export-title">Export</h2>
+            <button id="btn-copy" class="btn btn-small" hidden>Copy</button>
+          </div>
+          <pre id="export-text" class="export-text" hidden></pre>
+          <div id="export-preview" class="export-preview" hidden></div>
+        </div>
+      </aside>
     </main>
-    <script>
-      async function loadTasks() {
-        const res = await fetch("/api/tasks");
-        const tasks = await res.json();
-        const ul = document.getElementById("tasks");
-        ul.innerHTML = "";
-        for (const t of tasks) {
-          const li = document.createElement("li");
-          li.className = t.done ? "done" : "";
-          li.innerHTML = `<span class="dot"></span><span class="title">${t.title}</span>`;
-          ul.appendChild(li);
-        }
-      }
-      async function addTask() {
-        const input = document.getElementById("title");
-        const title = input.value.trim();
-        if (!title) return;
-        await fetch("/api/tasks", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title }),
-        });
-        input.value = "";
-        loadTasks();
-      }
-      async function checkHealth() {
-        try {
-          const res = await fetch("/api/health");
-          const data = await res.json();
-          document.getElementById("health").textContent =
-            `API status: ${data.status} (uptime ${data.uptime.toFixed(1)}s)`;
-        } catch (e) {
-          document.getElementById("health").textContent = "API unreachable";
-        }
-      }
-      document.getElementById("add").addEventListener("click", addTask);
-      document.getElementById("title").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") addTask();
-      });
-      loadTasks();
-      checkHealth();
-    </script>
+
+    <script src="/app.js"></script>
   </body>
 </html>

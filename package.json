@@ -2,7 +2,7 @@
   "name": "april2026",
   "version": "0.1.0",
   "private": true,
-  "description": "Minimal Node.js + TypeScript + Express starter used to bootstrap the Cloud Agent development environment.",
+  "description": "Architecture Diagram Builder — compose security architecture diagrams and export to Mermaid, D2, and SVG. An improved take on the ThinkInfoSec hub tool.",
   "type": "module",
   "engines": {
     "node": ">=22"
