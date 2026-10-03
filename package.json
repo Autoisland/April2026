@@ -1,0 +1,36 @@
+{
+  "name": "april2026",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Architecture Diagram Builder — compose security architecture diagrams and export to Mermaid, D2, and SVG. An improved take on the ThinkInfoSec hub tool.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "npm@10.9.7",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "express": "4.21.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.18.0",
+    "@types/express": "4.17.21",
+    "@types/node": "22.10.5",
+    "@types/supertest": "6.0.2",
+    "eslint": "9.18.0",
+    "supertest": "7.0.0",
+    "tsx": "4.19.2",
+    "typescript": "5.7.3",
+    "typescript-eslint": "8.20.0",
+    "vitest": "2.1.8"
+  }
+}
